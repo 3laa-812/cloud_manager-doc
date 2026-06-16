@@ -1,0 +1,3512 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cloud Manager — Project Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0a0f1e;
+        --ink2: #1e293b;
+        --muted: #64748b;
+        --dim: #94a3b8;
+        --bg: #f8fafd;
+        --surface: #fff;
+        --surface2: #f1f5f9;
+        --surface3: #e8edf5;
+        --accent: #0055cc;
+        --accent2: #0078d4;
+        --accentLt: #dbeafe;
+        --green: #15803d;
+        --greenLt: #dcfce7;
+        --amber: #b45309;
+        --amberLt: #fef3c7;
+        --red: #b91c1c;
+        --redLt: #fee2e2;
+        --purple: #6d28d9;
+        --purpleLt: #ede9fe;
+        --cyan: #0369a1;
+        --border: #e2e8f0;
+        --border2: #cbd5e1;
+        --code-bg: #0f1117;
+        --code-text: #e2e8f0;
+        --serif: "Instrument Serif", Georgia, serif;
+        --sans: "Geist", system-ui, sans-serif;
+        --mono: "DM Mono", "Fira Code", monospace;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 15px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+        line-height: 1.7;
+      }
+
+      /* ── LAYOUT ── */
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 256px;
+        background: var(--ink);
+        overflow-y: auto;
+        z-index: 100;
+        padding: 0 0 40px;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      #content {
+        margin-left: 256px;
+      }
+
+      /* ── SIDEBAR ── */
+      .sb-logo {
+        padding: 28px 24px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .sb-logo h1 {
+        font-family: var(--serif);
+        font-size: 20px;
+        color: #fff;
+        font-weight: 400;
+        letter-spacing: -0.3px;
+      }
+      .sb-logo p {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 3px;
+        font-family: var(--mono);
+      }
+      .sb-section {
+        padding: 18px 24px 6px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .sb-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 24px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: all 0.15s;
+        border-left: 2px solid transparent;
+      }
+      .sb-link:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .sb-link.active {
+        color: #fff;
+        border-left-color: var(--accent2);
+        background: rgba(0, 120, 212, 0.12);
+      }
+      .sb-link .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.5;
+        flex-shrink: 0;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--ink) 0%,
+          #1a2a50 55%,
+          #0f3460 100%
+        );
+        padding: 72px 80px 64px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 120, 212, 0.18) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: 160px;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(109, 40, 217, 0.1) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(0, 120, 212, 0.2);
+        border: 1px solid rgba(0, 120, 212, 0.35);
+        border-radius: 999px;
+        padding: 5px 14px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #93c5fd;
+        margin-bottom: 24px;
+      }
+      .hero h1 {
+        font-family: var(--serif);
+        font-size: 54px;
+        font-weight: 400;
+        color: #fff;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+      }
+      .hero h1 em {
+        color: #7dd3fc;
+        font-style: italic;
+      }
+      .hero p {
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 620px;
+        line-height: 1.7;
+        margin-bottom: 36px;
+      }
+      .hero-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .chip {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 12px;
+        font-family: var(--mono);
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      /* ── SECTIONS ── */
+      section {
+        padding: 72px 80px;
+        border-bottom: 1px solid var(--border);
+      }
+      section:last-child {
+        border-bottom: none;
+      }
+      .section-tag {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent2);
+        font-family: var(--mono);
+        margin-bottom: 8px;
+      }
+      h2 {
+        font-family: var(--serif);
+        font-size: 38px;
+        font-weight: 400;
+        color: var(--ink);
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+        line-height: 1.15;
+      }
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--ink);
+        margin: 40px 0 12px;
+      }
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 24px 0 8px;
+        font-family: var(--mono);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      p {
+        color: var(--ink2);
+        margin-bottom: 14px;
+        max-width: 800px;
+      }
+      strong {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      a {
+        color: var(--accent2);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── FEATURE GRID ── */
+      .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 32px 0;
+      }
+      .feat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .feat-card:hover {
+        border-color: var(--accent2);
+        box-shadow: 0 4px 24px rgba(0, 120, 212, 0.08);
+      }
+      .feat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin-bottom: 14px;
+      }
+      .feat-card h4 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+        font-family: var(--sans);
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      .feat-card p {
+        font-size: 13px;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      /* ── SCREENSHOT MOCKUP ── */
+      .screen-wrap {
+        margin: 36px 0;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.12),
+          0 0 0 1px var(--border);
+        background: var(--surface);
+      }
+      .screen-bar {
+        background: var(--ink2);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .screen-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .screen-dots span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .screen-dots span:nth-child(1) {
+        background: #ff5f57;
+      }
+      .screen-dots span:nth-child(2) {
+        background: #ffbd2e;
+      }
+      .screen-dots span:nth-child(3) {
+        background: #28c840;
+      }
+      .screen-url {
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 6px;
+        padding: 4px 14px;
+        font-size: 12px;
+        font-family: var(--mono);
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .screen-body {
+        padding: 0;
+        background: #f8fafd;
+      }
+
+      /* ── AZURE-STYLE UI MOCKUPS ── */
+      .azure-layout {
+        display: flex;
+        min-height: 520px;
+      }
+      .azure-sidebar {
+        width: 220px;
+        background: #1e293b;
+        padding: 16px 0;
+        flex-shrink: 0;
+      }
+      .az-sb-brand {
+        padding: 8px 20px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .az-sb-brand-icon {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #005faa, #0078d4);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+      .az-sb-brand-name {
+        font-size: 12px;
+        color: #fff;
+        font-weight: 500;
+      }
+      .az-sb-brand-sub {
+        font-size: 9px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .az-sb-section {
+        padding: 4px 20px 6px;
+        font-size: 9px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 8px;
+      }
+      .az-nav {
+        padding: 6px 12px;
+        margin: 1px 8px;
+        border-radius: 7px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: default;
+      }
+      .az-nav.active {
+        background: rgba(0, 120, 212, 0.25);
+        color: #fff;
+      }
+      .az-nav-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        flex-shrink: 0;
+      }
+      .azure-main {
+        flex: 1;
+        padding: 24px;
+        overflow: auto;
+      }
+      .az-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .az-title {
+        font-size: 20px;
+        font-weight: 500;
+        color: #191c1e;
+      }
+      .az-subtitle {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .az-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: default;
+      }
+      .az-btn-primary {
+        background: linear-gradient(135deg, #005faa, #0078d4);
+        color: #fff;
+      }
+      .az-btn-outline {
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        color: #1e293b;
+      }
+      .az-card {
+        background: #fff;
+        border: 1px solid rgba(192, 199, 212, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .az-metric {
+        background: #fff;
+        border: 1px solid rgba(192, 199, 212, 0.2);
+        border-radius: 10px;
+        padding: 16px 20px;
+      }
+      .az-metric-label {
+        font-size: 10px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .az-metric-val {
+        font-size: 28px;
+        font-weight: 300;
+        color: #191c1e;
+        letter-spacing: -1px;
+        margin-top: 4px;
+      }
+      .az-metric-sub {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+      .az-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .az-table th {
+        font-size: 10px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 400;
+        padding: 10px 12px;
+        background: #f8fafc;
+        border-bottom: 1px solid rgba(192, 199, 212, 0.15);
+        text-align: left;
+      }
+      .az-table td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(192, 199, 212, 0.08);
+        color: #191c1e;
+        vertical-align: middle;
+      }
+      .az-table tr:last-child td {
+        border-bottom: none;
+      }
+      .az-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+      .az-badge-green {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .az-badge-gray {
+        background: #f1f5f9;
+        color: #475569;
+      }
+      .az-badge-amber {
+        background: #fef3c7;
+        color: #b45309;
+      }
+      .az-badge-blue {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .az-badge-red {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .az-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 4px;
+      }
+      .dot-green {
+        background: #22c55e;
+      }
+      .dot-gray {
+        background: #94a3b8;
+      }
+      .dot-amber {
+        background: #f59e0b;
+      }
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid rgba(192, 199, 212, 0.2);
+        margin-bottom: 20px;
+      }
+      .tab {
+        padding: 8px 16px;
+        font-size: 13px;
+        color: #64748b;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        cursor: default;
+      }
+      .tab.active {
+        color: #0078d4;
+        border-bottom-color: #0078d4;
+        font-weight: 500;
+      }
+      .az-progress-bg {
+        height: 6px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+        margin: 6px 0;
+      }
+      .az-progress-fill {
+        height: 100%;
+        border-radius: 999px;
+      }
+
+      /* ── CODE BLOCK ── */
+      .code-wrap {
+        margin: 24px 0;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        max-width: 900px;
+      }
+      .code-header {
+        background: #1a1f2e;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .code-label {
+        font-size: 12px;
+        font-family: var(--mono);
+        color: #7dd3fc;
+      }
+      .code-tag {
+        font-size: 10px;
+        background: rgba(0, 120, 212, 0.2);
+        color: #93c5fd;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: var(--mono);
+      }
+      pre {
+        background: var(--code-bg);
+        padding: 22px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.75;
+        color: var(--code-text);
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .kw {
+        color: #c084fc;
+      }
+      .fn {
+        color: #7dd3fc;
+      }
+      .str {
+        color: #86efac;
+      }
+      .cm {
+        color: #475569;
+        font-style: italic;
+      }
+      .type {
+        color: #f9a8d4;
+      }
+      .attr {
+        color: #fde68a;
+      }
+      .num {
+        color: #fbbf24;
+      }
+      .ret {
+        color: #67e8f9;
+      }
+
+      /* ── TABLES ── */
+      .tbl-wrap {
+        overflow-x: auto;
+        margin: 24px 0;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+      }
+      th {
+        background: var(--surface2);
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 12px 18px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 13px 18px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        color: var(--ink2);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      td code,
+      th code {
+        font-family: var(--mono);
+        font-size: 12px;
+        background: var(--surface2);
+        padding: 2px 7px;
+        border-radius: 4px;
+        color: var(--accent);
+      }
+
+      /* ── CALLOUT ── */
+      .callout {
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 13.5px;
+        max-width: 860px;
+        border-left: 3px solid;
+      }
+      .callout-info {
+        background: #eff6ff;
+        border-color: var(--accent2);
+        color: #1e3a5f;
+      }
+      .callout-success {
+        background: var(--greenLt);
+        border-color: var(--green);
+        color: #14532d;
+      }
+      .callout-warn {
+        background: var(--amberLt);
+        border-color: var(--amber);
+        color: #78350f;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 12.5px;
+        background: var(--surface2);
+        padding: 1px 6px;
+        border-radius: 4px;
+        color: var(--accent);
+      }
+
+      /* ── ARCH DIAGRAM ── */
+      .arch-flow {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        overflow-x: auto;
+        padding: 24px 0;
+        max-width: 900px;
+      }
+      .arch-box {
+        border-radius: 10px;
+        padding: 14px 20px;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .arch-arrow {
+        color: var(--dim);
+        font-size: 22px;
+        padding: 0 4px;
+        flex-shrink: 0;
+      }
+      .ab-browser {
+        background: var(--accentLt);
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
+      }
+      .ab-mw {
+        background: var(--purpleLt);
+        border: 1px solid #ddd6fe;
+        color: var(--purple);
+      }
+      .ab-ctrl {
+        background: #e0f2fe;
+        border: 1px solid #bae6fd;
+        color: var(--cyan);
+      }
+      .ab-svc {
+        background: var(--greenLt);
+        border: 1px solid #bbf7d0;
+        color: var(--green);
+      }
+      .ab-repo {
+        background: var(--amberLt);
+        border: 1px solid #fde68a;
+        color: var(--amber);
+      }
+      .ab-db {
+        background: var(--redLt);
+        border: 1px solid #fecaca;
+        color: var(--red);
+      }
+      .ab-docker {
+        background: #ecfdf5;
+        border: 1px solid #6ee7b7;
+        color: #065f46;
+      }
+
+      /* ── YAML SYNTAX TOKENS ── */
+      .ck { color: #7dd3fc; }   /* key   */
+      .cv { color: #94a3b8; }   /* colon */
+      .cs { color: #86efac; }   /* string value */
+      .cn { color: #fda4af; }   /* number */
+      .cc { color: #64748b; }   /* comment */
+
+      /* ── LAYOUT HELPERS ── */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        max-width: 900px;
+      }
+      .three-col {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 900px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .badge-blue {
+        background: var(--accentLt);
+        color: var(--accent);
+      }
+      .badge-green {
+        background: var(--greenLt);
+        color: var(--green);
+      }
+      .badge-amber {
+        background: var(--amberLt);
+        color: var(--amber);
+      }
+      .badge-red {
+        background: var(--redLt);
+        color: var(--red);
+      }
+      .badge-purple {
+        background: var(--purpleLt);
+        color: var(--purple);
+      }
+      .space {
+        height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <nav id="sidebar">
+      <div class="sb-logo">
+        <h1>Cloud Manager</h1>
+        <p>Project Documentation</p>
+      </div>
+      <div class="sb-section">Overview</div>
+      <a class="sb-link active" href="#overview"
+        ><span class="dot"></span> Project Overview</a
+      >
+      <a class="sb-link" href="#features"
+        ><span class="dot"></span> Key Features</a
+      >
+      <a class="sb-link" href="#architecture"
+        ><span class="dot"></span> Architecture</a
+      >
+      <div class="sb-section">Modules</div>
+      <a class="sb-link" href="#auth"
+        ><span class="dot"></span> Authentication</a
+      >
+      <a class="sb-link" href="#dashboard"
+        ><span class="dot"></span> Dashboard</a
+      >
+      <a class="sb-link" href="#subscriptions"
+        ><span class="dot"></span> Subscriptions</a
+      >
+      <a class="sb-link" href="#resourcegroups"
+        ><span class="dot"></span> Resource Groups</a
+      >
+      <a class="sb-link" href="#vms"
+        ><span class="dot"></span> Virtual Machines</a
+      >
+      <a class="sb-link" href="#cost"
+        ><span class="dot"></span> Cost Analysis</a
+      >
+      <a class="sb-link" href="#entra"><span class="dot"></span> Entra ID</a>
+      <a class="sb-link" href="#rbac"><span class="dot"></span> RBAC</a>
+      <div class="sb-section">Reference</div>
+      <a class="sb-link" href="#models"><span class="dot"></span> Key Models</a>
+      <a class="sb-link" href="#docker"
+        ><span class="dot"></span> Docker Integration</a
+      >
+      <a class="sb-link" href="#achievements"
+        ><span class="dot"></span> Achievements</a
+      >
+      <div class="sb-section">Deployment</div>
+      <a class="sb-link" href="#deployment"><span class="dot"></span> Overview</a>
+      <a class="sb-link" href="#deploy-concepts"><span class="dot"></span> K8s Concepts</a>
+      <a class="sb-link" href="#deploy-yaml"><span class="dot"></span> YAML Files</a>
+      <a class="sb-link" href="#deploy-pods"><span class="dot"></span> Pod Architecture</a>
+      <a class="sb-link" href="#deploy-commands"><span class="dot"></span> Commands</a>
+      <a class="sb-link" href="#deploy-cloudflare"><span class="dot"></span> Cloudflare Tunnel</a>
+    </nav>
+
+    <!-- MAIN -->
+    <main id="content">
+      <!-- ══════ HERO ══════ -->
+      <div class="hero" id="overview">
+        <div class="hero-tag">🏗 Full-Stack Cloud Portal Simulation</div>
+        <h1>Cloud Manager<br /><em>Azure Portal</em> Reimagined</h1>
+        <p>
+          A production-grade web application built with ASP.NET Core 9 MVC that
+          simulates the Microsoft Azure portal — complete with subscription
+          management, Docker-backed virtual machines, real-time billing,
+          role-based access control, and Entra ID user management.
+        </p>
+        <div class="hero-chips">
+          <span class="chip">ASP.NET Core 9</span>
+          <span class="chip">EF Core + SQL Server</span>
+          <span class="chip">Docker + linuxserver/webtop</span>
+          <span class="chip">JWT Cookie Auth</span>
+          <span class="chip">BCrypt Password Hashing</span>
+          <span class="chip">RBAC — 3 Roles</span>
+          <span class="chip">Real-Time Cost Billing</span>
+          <span class="chip">Entra ID Simulation</span>
+          <span class="chip">Azure-Style UI</span>
+          <span class="chip">Kubernetes + Cloudflare Tunnel</span>
+        </div>
+      </div>
+
+      <!-- ══════ FEATURES ══════ -->
+      <section id="features">
+        <div class="section-tag">What we built</div>
+        <h2>Key Features & Services</h2>
+        <p>
+          Cloud Manager delivers a complete cloud infrastructure management
+          experience with enterprise-grade features implemented from scratch.
+        </p>
+
+        <div class="feat-grid">
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #dbeafe">☁️</div>
+            <h4>Azure Resource Hierarchy</h4>
+            <p>
+              Full 3-level hierarchy: Subscriptions → Resource Groups → Virtual
+              Machines, mirroring the exact Azure model with cascade operations.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #ede9fe">🔐</div>
+            <h4>JWT Cookie Authentication</h4>
+            <p>
+              Stateless JWT tokens stored in HttpOnly, Secure, SameSite=Strict
+              cookies. BCrypt password hashing. 8-hour session expiry with
+              auto-redirect.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #dcfce7">🛡</div>
+            <h4>3-Tier RBAC</h4>
+            <p>
+              Owner / Contributor / Reader roles scoped per Subscription. Every
+              controller action enforces role checks before any business logic
+              runs.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #fef3c7">🐳</div>
+            <h4>Docker VM Backend</h4>
+            <p>
+              Each VM is a real Docker container (linuxserver/webtop). The app
+              manages the full lifecycle: image pull, create, start, stop,
+              delete with port allocation.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #ecfdf5">🖥</div>
+            <h4>Browser Console Access</h4>
+            <p>
+              Live Linux desktop accessible directly in the browser via iframe —
+              KasmVNC built into the Docker image. No VNC client or extra
+              software needed.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #fee2e2">💰</div>
+            <h4>Real-Time Cost Billing</h4>
+            <p>
+              Azure-style cost tracking: Running rate per size + 10% Stopped
+              rate (reserved capacity). Month-to-date spend, budget limits, and
+              overspend alerts.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #f0fdf4">👥</div>
+            <h4>Entra ID Simulation</h4>
+            <p>
+              Owners create and manage sub-users (Admin/User), toggle
+              enable/disable. Assign IAM roles per subscription. Full user pool
+              isolation between owners.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #fdf4ff">📊</div>
+            <h4>Live Dashboard</h4>
+            <p>
+              Aggregated stats across all owned resources: subscription count,
+              running VMs, resource groups, recent activity — updated in
+              real-time.
+            </p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon" style="background: #fff7ed">📋</div>
+            <h4>VM Activity Log</h4>
+            <p>
+              Full audit trail of every VM operation — Create, Start, Stop,
+              Delete, Restart — with timestamps stored in VmActivityLog for
+              compliance.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════ ARCHITECTURE ══════ -->
+      <section id="architecture">
+        <div class="section-tag">System Design</div>
+        <h2>Architecture & Layers</h2>
+        <p>
+          Cloud Manager follows a clean 4-layer MVC architecture. Each layer
+          communicates only with the layer directly beneath it. Docker
+          containers are spawned as child OS processes by the service layer.
+        </p>
+
+        <h3>Request Flow</h3>
+        <div class="arch-flow">
+          <div class="arch-box ab-browser">
+            🌐<br />Browser<br /><span style="font-size: 10px; opacity: 0.7"
+              >HTTPS + Cookie</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-mw">
+            🔐<br />JWT Middleware<br /><span
+              style="font-size: 10px; opacity: 0.7"
+              >Validate + Claims</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-ctrl">
+            ⚙️<br />Controllers<br /><span style="font-size: 10px; opacity: 0.7"
+              >Route + RBAC</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-svc">
+            🔧<br />Services<br /><span style="font-size: 10px; opacity: 0.7"
+              >Business Logic</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-repo">
+            📦<br />Repositories<br /><span
+              style="font-size: 10px; opacity: 0.7"
+              >EF Core DAL</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-db">
+            🗄<br />SQL Server<br /><span style="font-size: 10px; opacity: 0.7"
+              >8 Entities</span
+            >
+          </div>
+        </div>
+
+        <div class="space"></div>
+        <div class="arch-flow">
+          <div class="arch-box ab-ctrl" style="font-size: 12px">
+            VirtualMachineService
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-docker">
+            🐳<br />VirtualBoxService<br /><span
+              style="font-size: 10px; opacity: 0.7"
+              >Docker CLI</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-docker">
+            📦<br />Docker Container<br /><span
+              style="font-size: 10px; opacity: 0.7"
+              >linuxserver/webtop</span
+            >
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-browser">
+            🖥<br />Browser iframe<br /><span
+              style="font-size: 10px; opacity: 0.7"
+              >KasmVNC :300x</span
+            >
+          </div>
+        </div>
+
+        <h3>Project Structure</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Folder</th>
+                <th>Responsibility</th>
+                <th>Files</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Presentation</strong></td>
+                <td><code>Views/</code></td>
+                <td>
+                  Razor .cshtml pages, Bootstrap 5 UI, minimal JS (fetch
+                  polling)
+                </td>
+                <td>22 views</td>
+              </tr>
+              <tr>
+                <td><strong>Controller</strong></td>
+                <td><code>Controllers/</code></td>
+                <td>
+                  HTTP routing, JWT claim reading, RBAC enforcement, Service
+                  delegation
+                </td>
+                <td>8 controllers</td>
+              </tr>
+              <tr>
+                <td><strong>Service</strong></td>
+                <td><code>Services/</code></td>
+                <td>
+                  All business logic — auth, billing, Docker lifecycle, IAM
+                </td>
+                <td>10 services</td>
+              </tr>
+              <tr>
+                <td><strong>Repository</strong></td>
+                <td><code>Repositories/</code></td>
+                <td>
+                  Thin EF Core wrappers — GetById, Add, Delete, SaveChanges
+                </td>
+                <td>10 repos</td>
+              </tr>
+              <tr>
+                <td><strong>Model</strong></td>
+                <td><code>Models/</code></td>
+                <td>8 entity classes + DbContext + ViewModel</td>
+                <td>10 models</td>
+              </tr>
+              <tr>
+                <td><strong>DTO</strong></td>
+                <td><code>DTOs/</code></td>
+                <td>Input transfer objects for forms and API calls</td>
+                <td>8 DTOs</td>
+              </tr>
+              <tr>
+                <td><strong>Migration</strong></td>
+                <td><code>Migrations/</code></td>
+                <td>EF Core schema versioning — 2 migrations</td>
+                <td>2 migrations</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ══════ AUTH ══════ -->
+      <section id="auth">
+        <div class="section-tag">Module 01</div>
+        <h2>Authentication</h2>
+        <p>
+          Registration and login with JWT cookie-based sessions. The first
+          registered user becomes an Owner with a default subscription
+          auto-created. BCrypt ensures passwords are never stored in plaintext.
+        </p>
+
+        <!-- Login Screen Mockup -->
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">https://localhost:7220/Auth/Login</div>
+          </div>
+          <div
+            class="screen-body"
+            style="
+              display: flex;
+              min-height: 420px;
+              align-items: center;
+              justify-content: center;
+              background: linear-gradient(135deg, #0f1f3d, #1a2a50);
+            "
+          >
+            <div
+              style="
+                background: #fff;
+                border-radius: 16px;
+                padding: 40px 48px;
+                width: 420px;
+                box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 28px;
+                "
+              >
+                <div
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    background: linear-gradient(135deg, #005faa, #0078d4);
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #fff;
+                    font-weight: 700;
+                    font-size: 14px;
+                  "
+                >
+                  C
+                </div>
+                <div>
+                  <div
+                    style="font-size: 15px; font-weight: 600; color: #191c1e"
+                  >
+                    Cloud Manager
+                  </div>
+                  <div style="font-size: 11px; color: #64748b">
+                    Infrastructure Control
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  font-size: 22px;
+                  font-weight: 500;
+                  color: #191c1e;
+                  margin-bottom: 6px;
+                "
+              >
+                Welcome back
+              </div>
+              <div style="font-size: 13px; color: #64748b; margin-bottom: 28px">
+                Sign in to your account
+              </div>
+              <div style="margin-bottom: 16px">
+                <div
+                  style="
+                    font-size: 11px;
+                    color: #64748b;
+                    margin-bottom: 6px;
+                    letter-spacing: 0.3px;
+                  "
+                >
+                  Email address
+                </div>
+                <div
+                  style="
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                    font-size: 13px;
+                    color: #94a3b8;
+                  "
+                >
+                  admin@example.com
+                </div>
+              </div>
+              <div style="margin-bottom: 24px">
+                <div
+                  style="
+                    font-size: 11px;
+                    color: #64748b;
+                    margin-bottom: 6px;
+                    letter-spacing: 0.3px;
+                  "
+                >
+                  Password
+                </div>
+                <div
+                  style="
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                    font-size: 13px;
+                    color: #94a3b8;
+                  "
+                >
+                  ••••••••••
+                </div>
+              </div>
+              <div
+                style="
+                  background: linear-gradient(135deg, #005faa, #0078d4);
+                  border-radius: 10px;
+                  padding: 12px;
+                  text-align: center;
+                  color: #fff;
+                  font-size: 14px;
+                  font-weight: 500;
+                "
+              >
+                Sign In
+              </div>
+              <div
+                style="
+                  text-align: center;
+                  margin-top: 16px;
+                  font-size: 13px;
+                  color: #64748b;
+                "
+              >
+                Don't have an account?
+                <span style="color: #005faa">Register</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>AuthController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Controllers/AuthController.cs</span
+            ><span class="code-tag">JWT + BCrypt</span>
+          </div>
+          <pre><span class="cm">// POST /Auth/Login</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Login</span>(<span class="type">LoginDto</span> dto)
+{
+    <span class="kw">if</span> (!ModelState.IsValid) <span class="kw">return</span> <span class="fn">View</span>(dto);
+
+    <span class="kw">var</span> (success, token, error) = <span class="kw">await</span> _authService.<span class="fn">LoginAsync</span>(dto);
+
+    <span class="kw">if</span> (!success) { ModelState.<span class="fn">AddModelError</span>(<span class="str">""</span>, error); <span class="kw">return</span> <span class="fn">View</span>(dto); }
+
+    Response.Cookies.<span class="fn">Append</span>(<span class="str">"jwt"</span>, token, <span class="kw">new</span> <span class="type">CookieOptions</span>
+    {
+        HttpOnly = <span class="kw">true</span>,   <span class="cm">// JS cannot read — XSS protection</span>
+        Secure   = <span class="kw">true</span>,   <span class="cm">// HTTPS only</span>
+        SameSite = <span class="type">SameSiteMode</span>.Strict,  <span class="cm">// CSRF protection</span>
+        Expires  = DateTimeOffset.UtcNow.<span class="fn">AddHours</span>(<span class="num">8</span>)
+    });
+
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="str">"Index"</span>, <span class="str">"Dashboard"</span>);
+}
+
+<span class="cm">// POST /Auth/Register — auto-creates subscription + Owner role</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Register</span>(<span class="type">RegisterDto</span> dto)
+{
+    <span class="kw">if</span> (!ModelState.IsValid) <span class="kw">return</span> <span class="fn">View</span>(dto);
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _authService.<span class="fn">RegisterAsync</span>(dto);
+    <span class="kw">if</span> (!success) { ModelState.<span class="fn">AddModelError</span>(<span class="str">""</span>, error); <span class="kw">return</span> <span class="fn">View</span>(dto); }
+    TempData[<span class="str">"Success"</span>] = <span class="str">"Account created! Please login."</span>;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Login));
+}</pre>
+        </div>
+        <div class="callout callout-info">
+          💡 <strong>Auto-provisioning:</strong> On register, AuthService
+          atomically creates: (1) User with Role="Owner", (2) a default
+          Subscription, (3) a RoleAssignmt with RoleName="Owner" scoped to that
+          subscription.
+        </div>
+      </section>
+
+      <!-- ══════ DASHBOARD ══════ -->
+      <section id="dashboard">
+        <div class="section-tag">Module 02</div>
+        <h2>Dashboard</h2>
+        <p>
+          The main landing page after login. Aggregates stats across all owned
+          subscriptions — total VMs, running count, resource groups, and recent
+          activity.
+        </p>
+
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">https://localhost:7220/Dashboard/Index</div>
+          </div>
+          <div class="screen-body">
+            <div class="azure-layout">
+              <div class="azure-sidebar">
+                <div class="az-sb-brand">
+                  <div class="az-sb-brand-icon">☁</div>
+                  <div>
+                    <div class="az-sb-brand-name">The Ethereal Engine</div>
+                    <div class="az-sb-brand-sub">INFRASTRUCTURE CONTROL</div>
+                  </div>
+                </div>
+                <div class="az-sb-section">Main</div>
+                <div class="az-nav active">
+                  <div class="az-nav-icon">📊</div>
+                  Dashboard
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💳</div>
+                  Subscriptions
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">📁</div>
+                  Resource Groups
+                </div>
+                <div class="az-sb-section">Compute</div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💻</div>
+                  Virtual Machines
+                </div>
+                <div class="az-sb-section">Identity</div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">👥</div>
+                  Entra ID
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">🛡</div>
+                  Roles
+                </div>
+                <div class="az-sb-section">Billing</div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💰</div>
+                  Cost Analysis
+                </div>
+              </div>
+              <div class="azure-main">
+                <div class="az-header">
+                  <div>
+                    <div class="az-title">Dashboard</div>
+                    <div class="az-subtitle">
+                      Overview of your infrastructure
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      gap: 8px;
+                      font-size: 12px;
+                      color: #64748b;
+                      align-items: center;
+                    "
+                  >
+                    👤 ali &nbsp;|&nbsp; Logout
+                  </div>
+                </div>
+                <!-- Metrics -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 14px;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div class="az-metric">
+                    <div class="az-metric-label">Subscriptions</div>
+                    <div class="az-metric-val">2</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label">Resource Groups</div>
+                    <div class="az-metric-val">4</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label">Total VMs</div>
+                    <div class="az-metric-val">6</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label" style="color: #15803d">
+                      Running VMs
+                    </div>
+                    <div class="az-metric-val" style="color: #15803d">3</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label">Stopped VMs</div>
+                    <div class="az-metric-val" style="color: #475569">3</div>
+                  </div>
+                </div>
+                <!-- Recent VMs -->
+                <div class="az-card">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 500;
+                      color: #191c1e;
+                      margin-bottom: 14px;
+                    "
+                  >
+                    Recent Virtual Machines
+                  </div>
+                  <table class="az-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>OS</th>
+                        <th>Size</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>production-web-01</td>
+                        <td>
+                          <span class="az-badge az-badge-green"
+                            ><span class="az-status-dot dot-green"></span
+                            >Running</span
+                          >
+                        </td>
+                        <td>Ubuntu 20.04</td>
+                        <td>Standard_B2s</td>
+                      </tr>
+                      <tr>
+                        <td>backend-api</td>
+                        <td>
+                          <span class="az-badge az-badge-green"
+                            ><span class="az-status-dot dot-green"></span
+                            >Running</span
+                          >
+                        </td>
+                        <td>Ubuntu 20.04</td>
+                        <td>Standard_B4ms</td>
+                      </tr>
+                      <tr>
+                        <td>staging-db</td>
+                        <td>
+                          <span class="az-badge az-badge-gray"
+                            ><span class="az-status-dot dot-gray"></span
+                            >Stopped</span
+                          >
+                        </td>
+                        <td>Debian 12</td>
+                        <td>Standard_B1s</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>DashboardController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Controllers/DashboardController.cs</span
+            ><span class="code-tag">Aggregation</span>
+          </div>
+          <pre>[<span class="attr">Authorize</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Index</span>()
+{
+    <span class="kw">var</span> userId = <span class="fn">GetUserId</span>();
+    <span class="kw">var</span> subs   = <span class="kw">await</span> _subRepo.<span class="fn">GetByOwnerAsync</span>(userId);
+
+    <span class="kw">var</span> allRgs = <span class="kw">new</span> List&lt;<span class="type">ResourceGroup</span>&gt;();
+    <span class="kw">var</span> allVms = <span class="kw">new</span> List&lt;<span class="type">VirtualMachine</span>&gt;();
+
+    <span class="kw">foreach</span> (<span class="kw">var</span> sub <span class="kw">in</span> subs)
+    {
+        <span class="kw">var</span> rgs = <span class="kw">await</span> _rgRepo.<span class="fn">GetBySubscriptionAsync</span>(sub.SubscriptionId);
+        allRgs.<span class="fn">AddRange</span>(rgs);
+        <span class="kw">foreach</span> (<span class="kw">var</span> rg <span class="kw">in</span> rgs)
+            allVms.<span class="fn">AddRange</span>(<span class="kw">await</span> _vmRepo.<span class="fn">GetByResourceGroupAsync</span>(rg.ResourceGroupId));
+    }
+
+    <span class="kw">var</span> model = <span class="kw">new</span> <span class="type">DashboardViewModel</span>
+    {
+        TotalSubscriptions  = subs.Count,
+        ActiveSubscriptions = subs.<span class="fn">Count</span>(s => s.Status == <span class="str">"Active"</span>),
+        TotalResourceGroups = allRgs.Count,
+        TotalVMs            = allVms.Count,
+        RunningVMs          = allVms.<span class="fn">Count</span>(v => v.Status == <span class="str">"Running"</span>),
+        StoppedVMs          = allVms.<span class="fn">Count</span>(v => v.Status == <span class="str">"Stopped"</span>),
+        RecentVMs           = allVms.<span class="fn">Take</span>(<span class="num">5</span>).<span class="fn">ToList</span>()
+    };
+    <span class="kw">return</span> <span class="fn">View</span>(model);
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ SUBSCRIPTIONS ══════ -->
+      <section id="subscriptions">
+        <div class="section-tag">Module 03</div>
+        <h2>Subscriptions</h2>
+        <p>
+          The top-level billing and access-control boundary, identical to Azure
+          Subscriptions. The Detail page has three tabs:
+          <strong>Overview</strong>, <strong>Resource Groups</strong>, and
+          <strong>IAM</strong> — plus a direct link to Cost Analysis. Budget
+          warning banners appear automatically when spend approaches the limit.
+        </p>
+
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">
+              https://localhost:7220/Subscription/Detail/1?tab=overview
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="azure-layout">
+              <div class="azure-sidebar">
+                <div class="az-sb-brand">
+                  <div class="az-sb-brand-icon">☁</div>
+                  <div>
+                    <div class="az-sb-brand-name">Cloud Manager</div>
+                    <div class="az-sb-brand-sub">INFRASTRUCTURE CONTROL</div>
+                  </div>
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">📊</div>
+                  Dashboard
+                </div>
+                <div class="az-nav active">
+                  <div class="az-nav-icon">💳</div>
+                  Subscriptions
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💰</div>
+                  Cost Analysis
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">👥</div>
+                  Entra ID
+                </div>
+              </div>
+              <div class="azure-main">
+                <!-- Budget warning banner -->
+                <div
+                  style="
+                    background: rgba(217, 119, 6, 0.08);
+                    border: 1px solid rgba(217, 119, 6, 0.25);
+                    border-radius: 10px;
+                    padding: 12px 16px;
+                    margin-bottom: 16px;
+                    font-size: 13px;
+                    color: #92400e;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                  "
+                >
+                  ⚠ <strong>Approaching budget limit</strong> — 85% of $50.00
+                  used ($42.50 spent).
+                  <span style="color: #005faa; margin-left: 8px"
+                    >Manage Budget →</span
+                  >
+                </div>
+                <div class="az-header">
+                  <div>
+                    <div class="az-title">production-us</div>
+                    <div
+                      class="az-subtitle"
+                      style="font-family: monospace; font-size: 11px"
+                    >
+                      sub-0001 · Active
+                    </div>
+                  </div>
+                  <div class="az-btn az-btn-primary">+ Add Resource Group</div>
+                </div>
+                <div class="tabs">
+                  <div class="tab active">Overview</div>
+                  <div class="tab">
+                    Resource Groups
+                    <span
+                      style="
+                        background: #e2e8f0;
+                        border-radius: 999px;
+                        padding: 1px 7px;
+                        font-size: 10px;
+                        margin-left: 4px;
+                      "
+                      >3</span
+                    >
+                  </div>
+                  <div class="tab">
+                    IAM
+                    <span
+                      style="
+                        background: #e2e8f0;
+                        border-radius: 999px;
+                        padding: 1px 7px;
+                        font-size: 10px;
+                        margin-left: 4px;
+                      "
+                      >2</span
+                    >
+                  </div>
+                  <div class="tab">
+                    Cost Analysis
+                    <span
+                      style="
+                        background: #dbeafe;
+                        color: #1d4ed8;
+                        border-radius: 999px;
+                        padding: 1px 8px;
+                        font-size: 10px;
+                        margin-left: 4px;
+                        font-family: monospace;
+                      "
+                      >$42.50</span
+                    >
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 12px;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <div class="az-metric">
+                    <div class="az-metric-label">Resource Groups</div>
+                    <div class="az-metric-val">3</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label">Virtual Machines</div>
+                    <div class="az-metric-val">5</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label" style="color: #15803d">
+                      Running VMs
+                    </div>
+                    <div class="az-metric-val" style="color: #15803d">2</div>
+                  </div>
+                  <div class="az-metric">
+                    <div class="az-metric-label">IAM Assignments</div>
+                    <div class="az-metric-val">2</div>
+                  </div>
+                  <div
+                    class="az-metric"
+                    style="border-color: rgba(217, 119, 6, 0.3)"
+                  >
+                    <div class="az-metric-label">Cost This Month</div>
+                    <div
+                      class="az-metric-val"
+                      style="font-size: 20px; color: #d97706"
+                    >
+                      $42.50
+                    </div>
+                    <div class="az-progress-bg">
+                      <div
+                        class="az-progress-fill"
+                        style="width: 85%; background: #d97706"
+                      ></div>
+                    </div>
+                    <div style="font-size: 10px; color: #94a3b8">
+                      85% of $50.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>SubscriptionController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Controllers/SubscriptionController.cs</span
+            ><span class="code-tag">IAM + Cost</span>
+          </div>
+          <pre><span class="cm">// Detail — loads budget status for banner + cost metric card</span>
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Detail</span>(<span class="type">int</span> id, <span class="type">string</span> tab = <span class="str">"overview"</span>)
+{
+    <span class="kw">var</span> sub = <span class="kw">await</span> _subRepo.<span class="fn">GetByIdWithDetailsAsync</span>(id);
+    <span class="kw">if</span> (sub <span class="kw">is</span> <span class="kw">null</span>) <span class="kw">return</span> <span class="fn">NotFound</span>();
+    <span class="kw">if</span> (!<span class="kw">await</span> <span class="fn">CanAccess</span>(<span class="fn">GetUserId</span>(), id)) <span class="kw">return</span> <span class="fn">Forbid</span>();
+
+    ViewBag.AllUsers     = <span class="kw">await</span> _userRepo.<span class="fn">GetByAdminAsync</span>(<span class="fn">GetUserId</span>());
+    ViewBag.IAMRoles     = <span class="kw">await</span> _roleRepo.<span class="fn">GetBySubscriptionAsync</span>(id);
+    ViewBag.BudgetStatus = <span class="kw">await</span> _cost.<span class="fn">GetBudgetStatusAsync</span>(id);
+    ViewBag.MonthCost    = ((<span class="type">BudgetStatus</span>)ViewBag.BudgetStatus).SpentThisMonth;
+    <span class="kw">return</span> <span class="fn">View</span>(sub);
+}
+
+<span class="cm">// AssignIAM — only Owner can assign roles on their subscriptions</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">AssignIAM</span>(
+    <span class="type">int</span> subscriptionId, [<span class="attr">FromForm</span>] <span class="type">int</span> UserId, [<span class="attr">FromForm</span>] <span class="type">string</span> RoleName)
+{
+    <span class="kw">if</span> (!<span class="kw">await</span> <span class="fn">IsOwner</span>(<span class="fn">GetUserId</span>(), subscriptionId)) <span class="kw">return</span> <span class="fn">Forbid</span>();
+    <span class="kw">var</span> (success, err) = <span class="kw">await</span> _subService.<span class="fn">AssignRoleAsync</span>(subscriptionId, UserId, RoleName);
+    TempData[success ? <span class="str">"Success"</span> : <span class="str">"Error"</span>] = success ? <span class="str">$"Role '{RoleName}' assigned."</span> : err;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Detail), <span class="kw">new</span> { id = subscriptionId, tab = <span class="str">"iam"</span> });
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ RESOURCE GROUPS ══════ -->
+      <section id="resourcegroups">
+        <div class="section-tag">Module 04</div>
+        <h2>Resource Groups</h2>
+        <p>
+          Logical containers within a subscription, identified by name and
+          region. Access control is inherited from the parent subscription's IAM
+          roles — Contributor can create but only Owner can delete.
+        </p>
+
+        <h4>ResourceGroupController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label"
+              >Controllers/ResourceGroupController.cs</span
+            ><span class="code-tag">RBAC Enforced</span>
+          </div>
+          <pre><span class="cm">// Only Owner and Contributor can create</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Create</span>(<span class="type">CreateResourceGroupDto</span> dto)
+{
+    <span class="kw">var</span> role = <span class="kw">await</span> <span class="fn">GetUserRoleOnSubscription</span>(dto.SubscriptionId);
+    <span class="kw">if</span> (role == <span class="str">"Reader"</span>) <span class="kw">return</span> <span class="fn">Forbid</span>();
+
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _rgService.<span class="fn">CreateAsync</span>(dto);
+    <span class="kw">if</span> (!success) { ModelState.<span class="fn">AddModelError</span>(<span class="str">""</span>, error); <span class="kw">return</span> <span class="fn">View</span>(dto); }
+
+    TempData[<span class="str">"Success"</span>] = <span class="str">$"Resource Group '{dto.Name}' created."</span>;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Index), <span class="kw">new</span> { subscriptionId = dto.SubscriptionId });
+}
+
+<span class="cm">// Only Owner can delete</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Delete</span>(<span class="type">int</span> id, <span class="type">int</span> subscriptionId)
+{
+    <span class="kw">if</span> (<span class="kw">await</span> <span class="fn">GetUserRoleOnSubscription</span>(subscriptionId) != <span class="str">"Owner"</span>) <span class="kw">return</span> <span class="fn">Forbid</span>();
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _rgService.<span class="fn">DeleteAsync</span>(<span class="fn">GetUserId</span>(), id);
+    TempData[success ? <span class="str">"Success"</span> : <span class="str">"Error"</span>] = success ? <span class="str">"Resource Group deleted."</span> : error;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Index), <span class="kw">new</span> { subscriptionId });
+}
+
+<span class="cm">// Role resolution: walks RG → Subscription to find user's effective role</span>
+<span class="kw">private async</span> Task&lt;<span class="type">string</span>?&gt; <span class="fn">GetUserRoleOnSubscription</span>(<span class="type">int</span> subscriptionId)
+{
+    <span class="kw">int</span> userId = <span class="fn">GetUserId</span>();
+    <span class="kw">var</span> sub = <span class="kw">await</span> _subRepo.<span class="fn">GetByIdAsync</span>(subscriptionId);
+    <span class="kw">if</span> (sub?.UserId == userId) <span class="kw">return</span> <span class="str">"Owner"</span>;  <span class="cm">// subscription owner = always Owner</span>
+    <span class="kw">var</span> roles = <span class="kw">await</span> _roleRepo.<span class="fn">GetByUserAsync</span>(userId);
+    <span class="kw">return</span> roles.<span class="fn">FirstOrDefault</span>(r =>
+        r.ScopeType == <span class="str">"Subscription"</span> && r.ScopeId == subscriptionId)?.RoleName;
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ VMs ══════ -->
+      <section id="vms">
+        <div class="section-tag">Module 05</div>
+        <h2>Virtual Machines</h2>
+        <p>
+          Each VM is a real Docker container running a full Ubuntu desktop with
+          KasmVNC. The Detail page has Azure-style tabs: Overview, Activity Log,
+          Properties, Monitoring, Networking, and a live browser Console. CPU
+          metrics are polled every 5 seconds via a JSON endpoint.
+        </p>
+
+        <!-- VM Detail Mockup -->
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">
+              https://localhost:7220/VirtualMachine/Detail/5?tab=overview
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="azure-layout">
+              <div class="azure-sidebar">
+                <div class="az-sb-brand">
+                  <div class="az-sb-brand-icon">☁</div>
+                  <div>
+                    <div class="az-sb-brand-name">Cloud Manager</div>
+                    <div class="az-sb-brand-sub">INFRASTRUCTURE CONTROL</div>
+                  </div>
+                </div>
+                <div class="az-nav active">
+                  <div class="az-nav-icon">💻</div>
+                  Virtual Machines
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💳</div>
+                  Subscriptions
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💰</div>
+                  Cost Analysis
+                </div>
+              </div>
+              <div class="azure-main">
+                <div
+                  style="font-size: 11px; color: #64748b; margin-bottom: 12px"
+                >
+                  Subscriptions / production-us / backend-rg /
+                  <strong>production-db-01</strong>
+                </div>
+                <div class="az-header" style="margin-bottom: 14px">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 10px">
+                      <div
+                        style="
+                          width: 32px;
+                          height: 32px;
+                          background: #dcfce7;
+                          border-radius: 7px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        💻
+                      </div>
+                      <div>
+                        <div class="az-title">production-db-01</div>
+                        <div
+                          style="
+                            font-size: 11px;
+                            color: #64748b;
+                            font-family: monospace;
+                          "
+                        >
+                          vm-0005 · Ubuntu 20.04 · Standard_B2s
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 8px">
+                    <div class="az-btn az-btn-outline" style="font-size: 12px">
+                      ▶ Start
+                    </div>
+                    <div class="az-btn az-btn-outline" style="font-size: 12px">
+                      ⏹ Stop
+                    </div>
+                    <div class="az-btn az-btn-outline" style="font-size: 12px">
+                      🔄 Restart
+                    </div>
+                    <div
+                      class="az-btn az-btn-outline"
+                      style="
+                        font-size: 12px;
+                        color: #dc2626;
+                        border-color: #fecaca;
+                      "
+                    >
+                      🗑 Delete
+                    </div>
+                  </div>
+                </div>
+                <div class="tabs">
+                  <div class="tab active">Overview</div>
+                  <div class="tab">Activity Log</div>
+                  <div class="tab">Properties</div>
+                  <div class="tab">Monitoring</div>
+                  <div class="tab">Console</div>
+                </div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                  "
+                >
+                  <div class="az-card">
+                    <div
+                      style="
+                        font-size: 13px;
+                        font-weight: 500;
+                        margin-bottom: 14px;
+                      "
+                    >
+                      Machine Details
+                    </div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 10px;
+                        font-size: 12px;
+                      "
+                    >
+                      <div>
+                        <div style="color: #64748b">Status</div>
+                        <div>
+                          <span class="az-badge az-badge-green"
+                            ><span class="az-status-dot dot-green"></span
+                            >Running</span
+                          >
+                        </div>
+                      </div>
+                      <div>
+                        <div style="color: #64748b">Size</div>
+                        <div style="font-weight: 500">Standard_B2s</div>
+                      </div>
+                      <div>
+                        <div style="color: #64748b">OS</div>
+                        <div>Ubuntu 20.04 LTS</div>
+                      </div>
+                      <div>
+                        <div style="color: #64748b">VNC Port</div>
+                        <div style="font-family: monospace">6802</div>
+                      </div>
+                      <div>
+                        <div style="color: #64748b">CPU Usage</div>
+                        <div style="color: #15803d; font-weight: 500">
+                          12.4%
+                        </div>
+                      </div>
+                      <div>
+                        <div style="color: #64748b">Created</div>
+                        <div>09 May 2026</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="az-card">
+                    <div
+                      style="
+                        font-size: 13px;
+                        font-weight: 500;
+                        margin-bottom: 14px;
+                      "
+                    >
+                      Cost This Month
+                    </div>
+                    <div
+                      style="
+                        font-size: 28px;
+                        font-weight: 300;
+                        color: #005faa;
+                        letter-spacing: -1px;
+                      "
+                    >
+                      $3.24
+                    </div>
+                    <div
+                      style="font-size: 11px; color: #64748b; margin-top: 4px"
+                    >
+                      $0.0416/hr running · $0.0042/hr stopped
+                    </div>
+                    <div
+                      style="font-size: 11px; color: #94a3b8; margin-top: 4px"
+                    >
+                      Est. $29.95/month at current rate
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>VirtualMachineController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label"
+              >Controllers/VirtualMachineController.cs</span
+            ><span class="code-tag">Docker + RBAC + Status Poll</span>
+          </div>
+          <pre><span class="cm">// Detail — Azure-style tabs with live status sync</span>
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Detail</span>(<span class="type">int</span> id, <span class="type">string</span> tab = <span class="str">"overview"</span>)
+{
+    <span class="kw">await</span> _vmService.<span class="fn">SyncStatusAsync</span>(id);     <span class="cm">// docker inspect → DB</span>
+    <span class="kw">var</span> vm       = <span class="kw">await</span> _vmService.<span class="fn">GetByIdAsync</span>(id);
+    <span class="kw">var</span> logs     = <span class="kw">await</span> _vmService.<span class="fn">GetLogsAsync</span>(id);
+    <span class="kw">var</span> userRole = <span class="kw">await</span> <span class="fn">GetUserRoleOnRG</span>(vm!.ResourceGroupId);
+
+    ViewBag.Tab      = tab;
+    ViewBag.Logs     = logs;
+    ViewBag.UserRole = userRole;
+    ViewBag.VncPort  = vm.VncPort;
+    <span class="kw">return</span> <span class="fn">View</span>(vm);
+}
+
+<span class="cm">// StatusPoll — polled by JS every 5s for live CPU + status</span>
+[<span class="attr">HttpGet</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">StatusPoll</span>(<span class="type">int</span> id)
+{
+    <span class="kw">var</span> status = <span class="kw">await</span> _vmService.<span class="fn">SyncStatusAsync</span>(id);
+    <span class="kw">var</span> vm     = <span class="kw">await</span> _vmService.<span class="fn">GetByIdAsync</span>(id);
+    <span class="kw">return</span> <span class="fn">Json</span>(<span class="kw">new</span> { status, cpuUsage = vm!.CpuUsage });
+}
+
+<span class="cm">// Restart — stop → delay → start (with role check)</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Restart</span>(<span class="type">int</span> id, <span class="type">int</span> resourceGroupId)
+{
+    <span class="kw">if</span> (<span class="kw">await</span> <span class="fn">GetUserRoleOnRG</span>(resourceGroupId) == <span class="str">"Reader"</span>) <span class="kw">return</span> <span class="fn">Forbid</span>();
+    <span class="kw">await</span> _vmService.<span class="fn">StopAsync</span>(id);
+    <span class="kw">await</span> Task.<span class="fn">Delay</span>(<span class="num">1500</span>);  <span class="cm">// let Docker settle</span>
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _vmService.<span class="fn">StartAsync</span>(id);
+    TempData[success ? <span class="str">"Success"</span> : <span class="str">"Error"</span>] = success ? <span class="str">"VM restarted."</span> : error;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Detail), <span class="kw">new</span> { id, tab = <span class="str">"overview"</span> });
+}
+
+<span class="cm">// Delete — only Owner</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Delete</span>(<span class="type">int</span> id, <span class="type">int</span> resourceGroupId)
+{
+    <span class="kw">if</span> (<span class="kw">await</span> <span class="fn">GetUserRoleOnRG</span>(resourceGroupId) != <span class="str">"Owner"</span>) <span class="kw">return</span> <span class="fn">Forbid</span>();
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _vmService.<span class="fn">DeleteAsync</span>(id);
+    TempData[success ? <span class="str">"Success"</span> : <span class="str">"Error"</span>] = success ? <span class="str">"VM deleted."</span> : error;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Index), <span class="kw">new</span> { resourceGroupId });
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ COST ══════ -->
+      <section id="cost">
+        <div class="section-tag">Module 06</div>
+        <h2>Cost Analysis</h2>
+        <p>
+          Full Azure-style Cost Management. Costs accumulate in real time —
+          Running VMs are charged at full rate, Stopped VMs at 10% (reserved
+          capacity model). Owners can set a monthly budget limit with a
+          configurable warning threshold.
+        </p>
+
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">https://localhost:7220/Cost/Analysis/1</div>
+          </div>
+          <div class="screen-body">
+            <div class="azure-layout">
+              <div class="azure-sidebar">
+                <div class="az-sb-brand">
+                  <div class="az-sb-brand-icon">☁</div>
+                  <div>
+                    <div class="az-sb-brand-name">Cloud Manager</div>
+                    <div class="az-sb-brand-sub">INFRASTRUCTURE CONTROL</div>
+                  </div>
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">💳</div>
+                  Subscriptions
+                </div>
+                <div class="az-nav active">
+                  <div class="az-nav-icon">💰</div>
+                  Cost Analysis
+                </div>
+              </div>
+              <div class="azure-main" style="padding: 0">
+                <!-- Hero -->
+                <div
+                  style="
+                    background: linear-gradient(135deg, #0f1f3d, #1e3a5f);
+                    padding: 24px 28px;
+                    color: #fff;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 10px;
+                      letter-spacing: 1.5px;
+                      text-transform: uppercase;
+                      color: rgba(255, 255, 255, 0.5);
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Month-to-date spend
+                  </div>
+                  <div
+                    style="
+                      font-size: 40px;
+                      font-weight: 300;
+                      letter-spacing: -2px;
+                    "
+                  >
+                    $42.50
+                  </div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      color: rgba(255, 255, 255, 0.5);
+                      margin-top: 4px;
+                    "
+                  >
+                    June 2026 · UTC billing
+                  </div>
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 16px;
+                      margin-top: 20px;
+                    "
+                  >
+                    <div
+                      style="
+                        border-left: 1px solid rgba(255, 255, 255, 0.12);
+                        padding-left: 16px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 10px;
+                          color: rgba(255, 255, 255, 0.45);
+                        "
+                      >
+                        All-time total
+                      </div>
+                      <div style="font-size: 22px; font-weight: 300">
+                        $184.20
+                      </div>
+                    </div>
+                    <div
+                      style="
+                        border-left: 1px solid rgba(255, 255, 255, 0.12);
+                        padding-left: 16px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 10px;
+                          color: rgba(255, 255, 255, 0.45);
+                        "
+                      >
+                        Budget
+                      </div>
+                      <div style="font-size: 22px; font-weight: 300">
+                        $50.00<span style="font-size: 12px; opacity: 0.5"
+                          >/mo</span
+                        >
+                      </div>
+                      <div
+                        style="
+                          font-size: 10px;
+                          color: rgba(255, 255, 255, 0.45);
+                        "
+                      >
+                        85% used
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding: 20px 24px">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 500;
+                      color: #191c1e;
+                      margin-bottom: 14px;
+                    "
+                  >
+                    Cost by Resource Group
+                  </div>
+                  <!-- RG row -->
+                  <div
+                    style="
+                      background: #f8fafc;
+                      border: 1px solid rgba(192, 199, 212, 0.2);
+                      border-radius: 10px;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    <div
+                      style="
+                        padding: 14px 16px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                      "
+                    >
+                      <div
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <div
+                          style="
+                            width: 28px;
+                            height: 28px;
+                            background: rgba(0, 95, 170, 0.1);
+                            border-radius: 6px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 12px;
+                          "
+                        >
+                          📁
+                        </div>
+                        <div>
+                          <div style="font-size: 13px; font-weight: 500">
+                            backend-rg
+                          </div>
+                          <div
+                            style="
+                              font-size: 10px;
+                              color: #94a3b8;
+                              font-family: monospace;
+                            "
+                          >
+                            East US · 3 VMs
+                          </div>
+                        </div>
+                      </div>
+                      <div style="text-align: right">
+                        <div
+                          style="
+                            font-family: monospace;
+                            font-weight: 600;
+                            color: #005faa;
+                          "
+                        >
+                          $28.40
+                        </div>
+                        <div style="font-size: 10px; color: #94a3b8">
+                          66.8% of total
+                        </div>
+                      </div>
+                    </div>
+                    <div style="padding: 0 16px 14px">
+                      <table class="az-table" style="font-size: 12px">
+                        <thead>
+                          <tr>
+                            <th>VM</th>
+                            <th>Size</th>
+                            <th>Status</th>
+                            <th>$/hr</th>
+                            <th style="text-align: right">This Month</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>production-web</td>
+                            <td style="font-family: monospace; font-size: 11px">
+                              Standard_B2s
+                            </td>
+                            <td>
+                              <span
+                                class="az-badge az-badge-green"
+                                style="font-size: 10px"
+                                ><span class="az-status-dot dot-green"></span
+                                >Running</span
+                              >
+                            </td>
+                            <td
+                              style="
+                                font-family: monospace;
+                                color: #005faa;
+                                font-size: 11px;
+                              "
+                            >
+                              $0.0416
+                            </td>
+                            <td
+                              style="
+                                text-align: right;
+                                font-family: monospace;
+                                font-weight: 600;
+                                color: #005faa;
+                              "
+                            >
+                              $18.50
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>backend-api</td>
+                            <td style="font-family: monospace; font-size: 11px">
+                              Standard_B1s
+                            </td>
+                            <td>
+                              <span
+                                class="az-badge az-badge-gray"
+                                style="font-size: 10px"
+                                ><span class="az-status-dot dot-gray"></span
+                                >Stopped</span
+                              >
+                            </td>
+                            <td
+                              style="
+                                font-family: monospace;
+                                color: #64748b;
+                                font-size: 11px;
+                              "
+                            >
+                              $0.0010
+                            </td>
+                            <td
+                              style="
+                                text-align: right;
+                                font-family: monospace;
+                                color: #64748b;
+                              "
+                            >
+                              $9.90
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Pricing Model</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Azure Size</th>
+                <th>vCPUs</th>
+                <th>RAM</th>
+                <th>Running $/hr</th>
+                <th>Stopped $/hr</th>
+                <th>Est. $/month</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Standard_B1s</code></td>
+                <td>1</td>
+                <td>1 GB</td>
+                <td><code>$0.0104</code></td>
+                <td><code>$0.0010</code></td>
+                <td>~$7.49</td>
+              </tr>
+              <tr>
+                <td><code>Standard_B2s</code></td>
+                <td>2</td>
+                <td>2 GB</td>
+                <td><code>$0.0416</code></td>
+                <td><code>$0.0042</code></td>
+                <td>~$29.95</td>
+              </tr>
+              <tr>
+                <td><code>Standard_B4ms</code></td>
+                <td>4</td>
+                <td>4 GB</td>
+                <td><code>$0.1660</code></td>
+                <td><code>$0.0166</code></td>
+                <td>~$119.52</td>
+              </tr>
+              <tr>
+                <td><code>Standard_D2s_v3</code></td>
+                <td>2</td>
+                <td>8 GB</td>
+                <td><code>$0.1050</code></td>
+                <td><code>$0.0105</code></td>
+                <td>~$75.60</td>
+              </tr>
+              <tr>
+                <td><code>Standard_D4s_v3</code></td>
+                <td>4</td>
+                <td>16 GB</td>
+                <td><code>$0.2100</code></td>
+                <td><code>$0.0210</code></td>
+                <td>~$151.20</td>
+              </tr>
+              <tr>
+                <td><code>Standard_F2s</code></td>
+                <td>2</td>
+                <td>4 GB</td>
+                <td><code>$0.1000</code></td>
+                <td><code>$0.0100</code></td>
+                <td>~$72.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>CostController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Controllers/CostController.cs</span
+            ><span class="code-tag">Billing Engine</span>
+          </div>
+          <pre><span class="cm">// GET /Cost/Analysis — full Azure-style cost page</span>
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Analysis</span>(<span class="type">int</span> subscriptionId)
+{
+    <span class="kw">if</span> (!<span class="kw">await</span> <span class="fn">CanAccessSubscription</span>(<span class="fn">GetUserId</span>(), subscriptionId)) <span class="kw">return</span> <span class="fn">Forbid</span>();
+
+    ViewBag.Report       = <span class="kw">await</span> _cost.<span class="fn">GetSubscriptionCostAsync</span>(subscriptionId);
+    ViewBag.BudgetStatus = <span class="kw">await</span> _cost.<span class="fn">GetBudgetStatusAsync</span>(subscriptionId);
+    ViewBag.Budget       = <span class="kw">await</span> _cost.<span class="fn">GetBudgetAsync</span>(subscriptionId);
+    ViewBag.IsOwner      = sub.UserId == <span class="fn">GetUserId</span>();
+    <span class="kw">return</span> <span class="fn">View</span>(sub);
+}
+
+<span class="cm">// POST /Cost/UpsertBudget — set monthly limit + warn threshold</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">UpsertBudget</span>(
+    <span class="type">int</span> subscriptionId, <span class="type">decimal</span> monthlyLimit, <span class="type">int</span> warnThresholdPct = <span class="num">80</span>)
+{
+    <span class="kw">if</span> (!<span class="kw">await</span> <span class="fn">IsOwnerOf</span>(<span class="fn">GetUserId</span>(), subscriptionId)) <span class="kw">return</span> <span class="fn">Forbid</span>();
+    <span class="kw">await</span> _cost.<span class="fn">UpsertBudgetAsync</span>(subscriptionId, monthlyLimit,
+        Math.<span class="fn">Clamp</span>(warnThresholdPct, <span class="num">1</span>, <span class="num">99</span>));
+    TempData[<span class="str">"Success"</span>] = <span class="str">$"Budget set to ${monthlyLimit:F2}/month."</span>;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Analysis), <span class="kw">new</span> { subscriptionId });
+}
+
+<span class="cm">// GET /Cost/BudgetStatus — JSON polled every 30s by the subscription banner</span>
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">BudgetStatus</span>(<span class="type">int</span> subscriptionId)
+{
+    <span class="kw">var</span> status = <span class="kw">await</span> _cost.<span class="fn">GetBudgetStatusAsync</span>(subscriptionId);
+    <span class="kw">return</span> <span class="fn">Json</span>(<span class="kw">new</span> {
+        spent        = status.SpentThisMonth.<span class="fn">ToString</span>(<span class="str">"F2"</span>),
+        limit        = status.BudgetLimit.<span class="fn">ToString</span>(<span class="str">"F2"</span>),
+        isOverWarning= status.IsOverWarning,
+        isOverBudget = status.IsOverBudget,
+        pctUsed      = status.BudgetLimit > <span class="num">0</span>
+            ? Math.<span class="fn">Round</span>((<span class="type">double</span>)(status.SpentThisMonth / status.BudgetLimit * <span class="num">100</span>), <span class="num">1</span>)
+            : <span class="num">0</span>
+    });
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ ENTRA ══════ -->
+      <section id="entra">
+        <div class="section-tag">Module 07</div>
+        <h2>Entra ID — User Management</h2>
+        <p>
+          Owners create and manage sub-users (Admin/User roles), enable/disable
+          accounts, and assign IAM roles on their subscriptions. Each Owner's
+          user pool is fully isolated — no Owner can see or modify another
+          Owner's users.
+        </p>
+
+        <div class="screen-wrap">
+          <div class="screen-bar">
+            <div class="screen-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="screen-url">https://localhost:7220/Entra/Index</div>
+          </div>
+          <div class="screen-body">
+            <div class="azure-layout" style="min-height: 400px">
+              <div class="azure-sidebar">
+                <div class="az-sb-brand">
+                  <div class="az-sb-brand-icon">☁</div>
+                  <div><div class="az-sb-brand-name">Cloud Manager</div></div>
+                </div>
+                <div class="az-nav active">
+                  <div class="az-nav-icon">👥</div>
+                  Entra ID
+                </div>
+                <div class="az-nav">
+                  <div class="az-nav-icon">🛡</div>
+                  Roles
+                </div>
+              </div>
+              <div class="azure-main">
+                <div class="az-header">
+                  <div>
+                    <div class="az-title">Entra ID</div>
+                    <div class="az-subtitle">Manage users and access</div>
+                  </div>
+                  <div class="az-btn az-btn-primary">+ Create User</div>
+                </div>
+                <div class="az-card">
+                  <table class="az-table">
+                    <thead>
+                      <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div
+                            style="
+                              display: flex;
+                              align-items: center;
+                              gap: 10px;
+                            "
+                          >
+                            <div
+                              style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                background: #dbeafe;
+                                color: #1d4ed8;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 11px;
+                                font-weight: 600;
+                              "
+                            >
+                              MH
+                            </div>
+                            <div>Mohammed Hassan</div>
+                          </div>
+                        </td>
+                        <td
+                          style="
+                            font-family: monospace;
+                            font-size: 12px;
+                            color: #64748b;
+                          "
+                        >
+                          m.hassan@corp.com
+                        </td>
+                        <td>
+                          <span class="az-badge az-badge-blue">Admin</span>
+                        </td>
+                        <td>
+                          <span class="az-badge az-badge-green">Active</span>
+                        </td>
+                        <td style="font-size: 12px; color: #64748b">
+                          08 May 2026
+                        </td>
+                        <td>
+                          <div style="display: flex; gap: 6px">
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #005faa;
+                                cursor: default;
+                              "
+                            >
+                              Disable
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #dc2626;
+                                cursor: default;
+                              "
+                            >
+                              Delete
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div
+                            style="
+                              display: flex;
+                              align-items: center;
+                              gap: 10px;
+                            "
+                          >
+                            <div
+                              style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                background: #ede9fe;
+                                color: #6d28d9;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 11px;
+                                font-weight: 600;
+                              "
+                            >
+                              SA
+                            </div>
+                            <div>Sara Ahmed</div>
+                          </div>
+                        </td>
+                        <td
+                          style="
+                            font-family: monospace;
+                            font-size: 12px;
+                            color: #64748b;
+                          "
+                        >
+                          sara@corp.com
+                        </td>
+                        <td>
+                          <span
+                            class="az-badge az-badge-blue"
+                            style="background: #f1f5f9; color: #475569"
+                            >User</span
+                          >
+                        </td>
+                        <td>
+                          <span class="az-badge az-badge-red">Disabled</span>
+                        </td>
+                        <td style="font-size: 12px; color: #64748b">
+                          10 May 2026
+                        </td>
+                        <td>
+                          <div style="display: flex; gap: 6px">
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #15803d;
+                                cursor: default;
+                              "
+                            >
+                              Enable
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #dc2626;
+                                cursor: default;
+                              "
+                            >
+                              Delete
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>EntraController.cs</h4>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Controllers/EntraController.cs</span
+            ><span class="code-tag">Identity Management</span>
+          </div>
+          <pre><span class="cm">// Only Owner/Admin can see and manage users</span>
+<span class="kw">private bool</span> <span class="fn">IsOwnerOrAdmin</span>()
+{
+    <span class="kw">var</span> role = User.<span class="fn">FindFirstValue</span>(<span class="type">ClaimTypes</span>.Role);
+    <span class="kw">return</span> role == <span class="str">"Admin"</span> || role == <span class="str">"Owner"</span>;
+}
+
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Index</span>()
+{
+    ViewBag.IsOwnerOrAdmin = <span class="fn">IsOwnerOrAdmin</span>();
+    <span class="kw">if</span> (!<span class="fn">IsOwnerOrAdmin</span>()) <span class="kw">return</span> <span class="fn">View</span>(<span class="kw">new</span> List&lt;<span class="type">Users</span>&gt;());  <span class="cm">// empty list for non-admins</span>
+    <span class="kw">var</span> users = <span class="kw">await</span> _entraService.<span class="fn">GetUsersByAdminAsync</span>(<span class="fn">GetUserId</span>());
+    <span class="kw">return</span> <span class="fn">View</span>(users);
+}
+
+<span class="cm">// Toggle Enable ↔ Disable</span>
+[<span class="attr">HttpPost</span>]
+<span class="kw">public async</span> Task&lt;<span class="type">IActionResult</span>&gt; <span class="fn">Toggle</span>(<span class="type">int</span> id)
+{
+    <span class="kw">if</span> (!<span class="fn">IsOwnerOrAdmin</span>()) { TempData[<span class="str">"Error"</span>] = <span class="str">"No permission."</span>; <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Index)); }
+    <span class="kw">var</span> (success, error) = <span class="kw">await</span> _entraService.<span class="fn">ToggleUserAsync</span>(<span class="fn">GetUserId</span>(), id);
+    TempData[success ? <span class="str">"Success"</span> : <span class="str">"Error"</span>] = success ? <span class="str">"User status updated."</span> : error;
+    <span class="kw">return</span> <span class="fn">RedirectToAction</span>(<span class="kw">nameof</span>(Index));
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ RBAC ══════ -->
+      <section id="rbac">
+        <div class="section-tag">Module 08</div>
+        <h2>Role-Based Access Control</h2>
+        <p>
+          Three roles scoped per Subscription. Every controller enforces role
+          checks before executing any write operation. The role hierarchy walks
+          up from VM → Resource Group → Subscription to find the user's
+          effective role.
+        </p>
+
+        <div class="three-col">
+          <div class="card" style="border-left: 3px solid #d97706">
+            <div
+              style="
+                font-size: 14px;
+                font-weight: 600;
+                color: #b45309;
+                margin-bottom: 8px;
+              "
+            >
+              👑 Owner
+            </div>
+            <div style="font-size: 13px; color: var(--muted)">
+              Full control. Create, modify, delete everything. Assign/revoke IAM
+              roles. The only role that can delete VMs and Resource Groups.
+            </div>
+          </div>
+          <div class="card" style="border-left: 3px solid #0369a1">
+            <div
+              style="
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--cyan);
+                margin-bottom: 8px;
+              "
+            >
+              🔧 Contributor
+            </div>
+            <div style="font-size: 13px; color: var(--muted)">
+              Create and operate resources. Start/Stop VMs. Create Resource
+              Groups. Cannot delete or assign IAM roles.
+            </div>
+          </div>
+          <div class="card" style="border-left: 3px solid #94a3b8">
+            <div
+              style="
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--muted);
+                margin-bottom: 8px;
+              "
+            >
+              👁 Reader
+            </div>
+            <div style="font-size: 13px; color: var(--muted)">
+              View-only. All mutating actions return 403 Forbidden. Can view VMs
+              and the browser console.
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Owner</th>
+                <th>Contributor</th>
+                <th>Reader</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>View all resources</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td>Create Subscription / Resource Group / VM</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Start / Stop / Restart VM</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Delete VM / Resource Group / Subscription</td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Assign / Revoke IAM roles</td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Set / Remove budget</td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>Create / Delete Entra users</td>
+                <td>✅ (Owner + Admin)</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ══════ MODELS ══════ -->
+      <section id="models">
+        <div class="section-tag">Data Layer</div>
+        <h2>Key Models</h2>
+        <p>
+          8 entities managed by EF Core with code-first migrations. All
+          parent-child relationships use cascade delete.
+        </p>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Models/VirtualMachine.cs</span
+            ><span class="code-tag">Core Entity</span>
+          </div>
+          <pre><span class="kw">public class</span> <span class="type">VirtualMachine</span>
+{
+    [<span class="attr">Key</span>] <span class="kw">public int</span> VmId { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public string</span> Name   { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>;
+    <span class="kw">public string</span> OS     { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>;
+    <span class="kw">public string</span> Size   { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>;
+    <span class="kw">public string</span> Status { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">"Stopped"</span>;   <span class="cm">// Running | Stopped | Deallocating</span>
+    <span class="kw">public double</span> CpuUsage   { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="num">0</span>;
+    <span class="kw">public string</span>? VBoxVmName { <span class="kw">get</span>; <span class="kw">set</span>; }    <span class="cm">// Docker container name</span>
+    <span class="kw">public int</span>    VncPort    { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="num">0</span>;  <span class="cm">// Host port → container :3000</span>
+    <span class="kw">public int</span>    ResourceGroupId { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="type">ResourceGroup</span>? ResourceGroup { <span class="kw">get</span>; <span class="kw">set</span>; }
+}</pre>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Models/VmCostEntry.cs</span
+            ><span class="code-tag">Billing</span>
+          </div>
+          <pre><span class="cm">// One row per billing interval (Running or Stopped)</span>
+<span class="kw">public class</span> <span class="type">VmCostEntry</span>
+{
+    [<span class="attr">Key</span>] <span class="kw">public int</span>       EntryId       { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public int</span>            VmId          { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public string</span>         BillingStatus { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>; <span class="cm">// Running | Stopped</span>
+    <span class="kw">public decimal</span>        HourlyRate    { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// USD/hour for this interval</span>
+    <span class="kw">public</span> DateTime       StartedAt     { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> DateTime?      EndedAt       { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// null = interval still open</span>
+    <span class="kw">public decimal</span>        AccruedCost   { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// updated lazily</span>
+    <span class="kw">public bool</span>           IsFinalized   { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// true after Stop/Delete</span>
+    <span class="kw">public</span> <span class="type">VirtualMachine</span>? VirtualMachine { <span class="kw">get</span>; <span class="kw">set</span>; }
+}</pre>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Models/Users.cs</span
+            ><span class="code-tag">Identity</span>
+          </div>
+          <pre><span class="kw">public class</span> <span class="type">Users</span>
+{
+    [<span class="attr">Key</span>] <span class="kw">public int</span>    UserId           { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public string</span>      Name             { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>;
+    <span class="kw">public string</span>      Email            { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>;
+    <span class="kw">public string</span>      PasswordHash     { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">string.Empty</span>; <span class="cm">// BCrypt</span>
+    <span class="kw">public string</span>      Role             { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">"User"</span>;         <span class="cm">// Owner|Admin|User|Disabled</span>
+    <span class="kw">public int</span>?        CreatedByAdminId { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// null = self-registered Owner</span>
+    <span class="kw">public</span> ICollection&lt;<span class="type">SubScription</span>&gt; SubScriptions  { <span class="kw">get</span>; <span class="kw">set</span>; } = [];
+    <span class="kw">public</span> ICollection&lt;<span class="type">RoleAssignmt</span>&gt; RoleAssignments { <span class="kw">get</span>; <span class="kw">set</span>; } = [];
+}</pre>
+        </div>
+      </section>
+
+      <!-- ══════ DOCKER ══════ -->
+      <section id="docker">
+        <div class="section-tag">Infrastructure</div>
+        <h2>Docker Integration</h2>
+        <p>
+          VirtualBoxService spawns <code>docker</code> CLI child processes from
+          C# to manage container lifecycles. The image
+          <code>lscr.io/linuxserver/webtop:ubuntu-xfce</code> provides a
+          complete Ubuntu Xfce desktop with KasmVNC built-in — accessible
+          directly in the browser on a unique allocated port.
+        </p>
+
+        <div
+          class="arch-flow"
+          style="flex-direction: column; align-items: flex-start; gap: 8px"
+        >
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="arch-box ab-browser" style="width: 220px">
+              🌐 Browser iframe<br /><span style="font-size: 11px"
+                >http://localhost:68xx/</span
+              >
+            </div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-box ab-docker" style="width: 280px">
+              🐳 Docker port bind<br /><span style="font-size: 11px"
+                >host:68xx → container:3000</span
+              >
+            </div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-box ab-docker" style="width: 250px">
+              🖥 KasmVNC (in image)<br /><span style="font-size: 11px"
+                >Xfce desktop over WebSocket</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="space"></div>
+        <div class="callout callout-success">
+          ✅ <strong>Why linuxserver/webtop?</strong> Multi-arch (AMD64 + ARM64)
+          — works on Windows Docker Desktop with WSL2. KasmVNC built-in means
+          zero host configuration. No websockify, no x11vnc, no OVA files
+          needed.
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">docker run command generated per VM</span
+            ><span class="code-tag">VirtualBoxService.cs</span>
+          </div>
+          <pre>docker run -d
+  --name <span class="str">"cm-myvm-a1b2c3d4"</span>        <span class="cm"># unique name: cm-{name}-{8-char-guid}</span>
+  -p <span class="num">6802</span>:<span class="num">3000</span>                      <span class="cm"># allocated host port → KasmVNC web UI</span>
+  --cpus=<span class="str">"2"</span>                         <span class="cm"># from Azure size table</span>
+  --memory=<span class="str">"1024m"</span>                   <span class="cm"># from Azure size table</span>
+  --shm-size=<span class="str">"512m"</span>                  <span class="cm"># desktop renderer needs shared memory</span>
+  -e PUID=<span class="num">1000</span> -e PGID=<span class="num">1000</span>         <span class="cm"># linuxserver required env vars</span>
+  -e TZ=UTC -e SUBFOLDER=/
+  --restart unless-stopped            <span class="cm"># survives Docker Desktop restarts</span>
+  lscr.io/linuxserver/webtop:ubuntu-xfce</pre>
+        </div>
+      </section>
+
+      <!-- ══════ ACHIEVEMENTS ══════ -->
+      <section id="achievements">
+        <div class="section-tag">What we achieved</div>
+        <h2>Project Achievements</h2>
+
+        <div class="feat-grid">
+          <div class="feat-card" style="border-color: #86efac">
+            <div class="feat-icon" style="background: #dcfce7">✅</div>
+            <h4>Real JWT Security</h4>
+            <p>
+              Implemented stateless authentication from scratch — HMAC-SHA256
+              signed tokens, HttpOnly cookie storage, auto-redirect middleware,
+              BCrypt hashing. No identity libraries.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #93c5fd">
+            <div class="feat-icon" style="background: #dbeafe">🏗</div>
+            <h4>Clean Architecture</h4>
+            <p>
+              4-layer separation (Controller → Service → Repository → DbContext)
+              with 8 service interfaces and 5 repository interfaces. Zero
+              business logic in controllers.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #c4b5fd">
+            <div class="feat-icon" style="background: #ede9fe">🐳</div>
+            <h4>Real Running VMs</h4>
+            <p>
+              Each VM is a live Docker container with a full Linux desktop — not
+              a simulation. Users can open a browser console and interact with a
+              real Ubuntu/Xfce environment.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #fde68a">
+            <div class="feat-icon" style="background: #fef3c7">💰</div>
+            <h4>Live Cost Billing</h4>
+            <p>
+              Azure-style interval-based billing with Running/Stopped rates,
+              month-to-date reports per VM / Resource Group / Subscription,
+              budget limits, and overspend alerts.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #6ee7b7">
+            <div class="feat-icon" style="background: #ecfdf5">🛡</div>
+            <h4>Enterprise RBAC</h4>
+            <p>
+              3-tier role system (Owner / Contributor / Reader) with every
+              controller action enforcing role checks before executing, walking
+              the resource hierarchy to find the effective role.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #f9a8d4">
+            <div class="feat-icon" style="background: #fdf2f8">👥</div>
+            <h4>Multi-Tenant IAM</h4>
+            <p>
+              Complete Entra ID simulation: sub-user creation, enable/disable
+              toggle, IAM role assignment per subscription, and total isolation
+              between different Owners' user pools.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #fca5a5">
+            <div class="feat-icon" style="background: #fee2e2">📊</div>
+            <h4>EF Core Migrations</h4>
+            <p>
+              Full schema evolution tracked with 2 EF Core migrations (9 tables
+              total). Cascade delete configured for all parent-child
+              relationships via Fluent API.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #a5b4fc">
+            <div class="feat-icon" style="background: #eef2ff">🎨</div>
+            <h4>Azure-Faithful UI</h4>
+            <p>
+              Every page mirrors the real Azure portal: tabbed detail views,
+              breadcrumbs, metric cards, collapsible resource groups in cost
+              view, status dots, and flash messages.
+            </p>
+          </div>
+          <div class="feat-card" style="border-color: #67e8f9">
+            <div class="feat-icon" style="background: #ecfeff">⚡</div>
+            <h4>Live Status Polling</h4>
+            <p>
+              JavaScript polls <code>/VirtualMachine/StatusPoll</code> every 5
+              seconds to show real-time VM status and CPU usage from
+              <code>docker inspect</code> and <code>docker stats</code>.
+            </p>
+          </div>
+        </div>
+
+        <div class="space"></div>
+        <div class="callout callout-info">
+          📌 <strong>Technical Stack Summary:</strong> ASP.NET Core 9 MVC · EF
+          Core 9 · SQL Server · JWT Bearer (cookie transport) · BCrypt.Net ·
+          Docker Desktop · linuxserver/webtop · Bootstrap 5 · 8 Controllers · 10
+          Services · 10 Repositories · 8 Entities · 2 Migrations · 22 Razor
+          Views
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <!-- SECTION 8 — DEPLOYMENT                                        -->
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <section id="deployment">
+        <div class="section-tag">Section 8</div>
+        <h2>Deployment — Kubernetes + Cloudflare Tunnel</h2>
+        <p>
+          Cloud Manager is deployed using <strong>Kubernetes (K8s)</strong> as the container
+          orchestration platform. Kubernetes manages the application workloads through a cluster
+          model, and public access is provided via a <strong>Cloudflare Tunnel</strong> —
+          eliminating the need for a public IP or open firewall ports.
+        </p>
+
+        <!-- Deployment flow diagram -->
+        <div class="arch-flow" style="margin-top:28px;">
+          <div class="arch-box ab-browser">👤 User<br/><small>Any Network</small></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box" style="background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;">☁️ Cloudflare<br/><small>Edge / HTTPS</small></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box" style="background:#f0fdf4;border:1px solid #86efac;color:#166534;">🔒 cloudflared<br/><small>Tunnel</small></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-ctrl">⚙️ K8s Service<br/><small>ClusterIP :80</small></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-svc">📦 App Pod<br/><small>:8080</small></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box ab-db">🗄 SQL Pod<br/><small>:1433</small></div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.1 K8s Concepts ── -->
+        <div id="deploy-concepts">
+          <h3>8.1 &nbsp;Core Kubernetes Concepts Used</h3>
+          <p style="margin-bottom:18px;">
+            Kubernetes organises workloads through a hierarchy of abstractions.
+            The table below explains each concept and how it maps to this project.
+          </p>
+          <table class="data-table">
+            <thead>
+              <tr><th>Concept</th><th>What It Is</th><th>How It's Used Here</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cluster</strong></td>
+                <td>A group of machines (nodes) managed by Kubernetes as one unit — mirrors a real cloud server environment.</td>
+                <td>One local cluster created to host the entire Cloud Manager application.</td>
+              </tr>
+              <tr>
+                <td><strong>Node</strong></td>
+                <td>A single machine inside the cluster — can be physical or virtual.</td>
+                <td>One node acts as both control plane and worker.</td>
+              </tr>
+              <tr>
+                <td><strong>Pod</strong></td>
+                <td>The smallest deployable unit in Kubernetes. A Pod wraps one or more containers and runs on a Node. <em>Not the same as a Docker container</em> — a Pod is a K8s abstraction over containers.</td>
+                <td>Two Pods: one for the ASP.NET Core app, one for SQL Server.</td>
+              </tr>
+              <tr>
+                <td><strong>Deployment</strong></td>
+                <td>A K8s resource that declares the desired state for Pods — which image to run, how many replicas, restart policy, etc.</td>
+                <td>One Deployment YAML for the app Pod, one for the SQL Server Pod.</td>
+              </tr>
+              <tr>
+                <td><strong>Service</strong></td>
+                <td>A stable network endpoint that exposes Pods. Unlike a Pod's IP (which changes on restart), a Service IP is fixed and persistent.</td>
+                <td>A Service YAML is required so the app can always reach SQL Server at a fixed address, regardless of Pod restarts.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-info" style="margin-top:20px;">
+            💡 <strong>Why a Service alongside the Deployment?</strong> If the app relied directly
+            on the SQL Server Pod IP, that IP would change every time the Pod restarted. The Service
+            provides a stable DNS name and IP that never changes — essential for reliable database
+            connectivity.
+          </div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.2 YAML Files ── -->
+        <div id="deploy-yaml">
+          <h3>8.2 &nbsp;Configuration Files (YAML)</h3>
+          <p style="margin-bottom:18px;">
+            Three YAML files define the entire deployment. YAML files in Kubernetes act as
+            <strong>declarative configuration scripts</strong> — they describe the desired state
+            and Kubernetes ensures the cluster matches it.
+          </p>
+
+          <table class="data-table" style="margin-bottom:28px;">
+            <thead>
+              <tr><th>File</th><th>Type</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>deployment.yaml</code></td>
+                <td>Deployment</td>
+                <td>Declares the ASP.NET Core app Pod — Docker image, port, replicas, env vars, restart policy.</td>
+              </tr>
+              <tr>
+                <td><code>service.yaml</code></td>
+                <td>Service</td>
+                <td>Exposes the app Pod on a stable ClusterIP. Routes traffic from Cloudflare Tunnel to the app container.</td>
+              </tr>
+              <tr>
+                <td><code>sql.yaml</code></td>
+                <td>Deployment + Service</td>
+                <td>Deploys the SQL Server Pod and creates its Service so the app can connect to the database at a fixed internal address.</td>
+              </tr>
+              <tr>
+                <td><code>Dockerfile</code></td>
+                <td>Docker Build Script</td>
+                <td>Builds the custom Docker image of the project. Pushed to Docker Hub and referenced by <code>deployment.yaml</code>. Not a YAML file.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- deployment.yaml -->
+          <div class="code-header"><span>deployment.yaml</span><span class="code-lang">Kubernetes Deployment</span></div>
+          <div class="code-block"><pre><span class="ck">apiVersion</span><span class="cv">:</span> apps/v1
+<span class="ck">kind</span><span class="cv">:</span> Deployment
+<span class="ck">metadata</span><span class="cv">:</span>
+  <span class="ck">name</span><span class="cv">:</span> cloudmanager-app
+<span class="ck">spec</span><span class="cv">:</span>
+  <span class="ck">replicas</span><span class="cv">:</span> <span class="cn">1</span>
+  <span class="ck">selector</span><span class="cv">:</span>
+    <span class="ck">matchLabels</span><span class="cv">:</span>
+      <span class="ck">app</span><span class="cv">:</span> cloudmanager
+  <span class="ck">template</span><span class="cv">:</span>
+    <span class="ck">metadata</span><span class="cv">:</span>
+      <span class="ck">labels</span><span class="cv">:</span>
+        <span class="ck">app</span><span class="cv">:</span> cloudmanager
+    <span class="ck">spec</span><span class="cv">:</span>
+      <span class="ck">containers</span><span class="cv">:</span>
+        - <span class="ck">name</span><span class="cv">:</span> cloudmanager
+          <span class="ck">image</span><span class="cv">:</span> &lt;dockerhub-user&gt;/cloudmanager:latest
+          <span class="ck">ports</span><span class="cv">:</span>
+            - <span class="ck">containerPort</span><span class="cv">:</span> <span class="cn">8080</span>
+          <span class="ck">env</span><span class="cv">:</span>
+            - <span class="ck">name</span><span class="cv">:</span> ConnectionStrings__DefaultConnection
+              <span class="ck">value</span><span class="cv">:</span> <span class="cs">"Server=sqlserver-service;Database=CloudManagerDb;User Id=sa;Password=YourStrong!Passw0rd;"</span>
+            - <span class="ck">name</span><span class="cv">:</span> Jwt__Key
+              <span class="ck">value</span><span class="cv">:</span> <span class="cs">"&lt;jwt-secret-key&gt;"</span></pre></div>
+
+          <div style="height:20px;"></div>
+
+          <!-- service.yaml -->
+          <div class="code-header"><span>service.yaml</span><span class="code-lang">Kubernetes Service</span></div>
+          <div class="code-block"><pre><span class="ck">apiVersion</span><span class="cv">:</span> v1
+<span class="ck">kind</span><span class="cv">:</span> Service
+<span class="ck">metadata</span><span class="cv">:</span>
+  <span class="ck">name</span><span class="cv">:</span> cloudmanager-service
+<span class="ck">spec</span><span class="cv">:</span>
+  <span class="ck">selector</span><span class="cv">:</span>
+    <span class="ck">app</span><span class="cv">:</span> cloudmanager
+  <span class="ck">ports</span><span class="cv">:</span>
+    - <span class="ck">protocol</span><span class="cv">:</span> TCP
+      <span class="ck">port</span><span class="cv">:</span> <span class="cn">80</span>
+      <span class="ck">targetPort</span><span class="cv">:</span> <span class="cn">8080</span>
+  <span class="ck">type</span><span class="cv">:</span> ClusterIP</pre></div>
+
+          <div style="height:20px;"></div>
+
+          <!-- sql.yaml -->
+          <div class="code-header"><span>sql.yaml</span><span class="code-lang">SQL Server Deployment + Service</span></div>
+          <div class="code-block"><pre><span class="ck">apiVersion</span><span class="cv">:</span> apps/v1
+<span class="ck">kind</span><span class="cv">:</span> Deployment
+<span class="ck">metadata</span><span class="cv">:</span>
+  <span class="ck">name</span><span class="cv">:</span> sqlserver
+<span class="ck">spec</span><span class="cv">:</span>
+  <span class="ck">replicas</span><span class="cv">:</span> <span class="cn">1</span>
+  <span class="ck">selector</span><span class="cv">:</span>
+    <span class="ck">matchLabels</span><span class="cv">:</span>
+      <span class="ck">app</span><span class="cv">:</span> sqlserver
+  <span class="ck">template</span><span class="cv">:</span>
+    <span class="ck">metadata</span><span class="cv">:</span>
+      <span class="ck">labels</span><span class="cv">:</span>
+        <span class="ck">app</span><span class="cv">:</span> sqlserver
+    <span class="ck">spec</span><span class="cv">:</span>
+      <span class="ck">containers</span><span class="cv">:</span>
+        - <span class="ck">name</span><span class="cv">:</span> sqlserver
+          <span class="ck">image</span><span class="cv">:</span> mcr.microsoft.com/mssql/server:2022-latest
+          <span class="ck">ports</span><span class="cv">:</span>
+            - <span class="ck">containerPort</span><span class="cv">:</span> <span class="cn">1433</span>
+          <span class="ck">env</span><span class="cv">:</span>
+            - <span class="ck">name</span><span class="cv">:</span> ACCEPT_EULA
+              <span class="ck">value</span><span class="cv">:</span> <span class="cs">"Y"</span>
+            - <span class="ck">name</span><span class="cv">:</span> SA_PASSWORD
+              <span class="ck">value</span><span class="cv">:</span> <span class="cs">"YourStrong!Passw0rd"</span>
+<span class="cv">---</span>
+<span class="ck">apiVersion</span><span class="cv">:</span> v1
+<span class="ck">kind</span><span class="cv">:</span> Service
+<span class="ck">metadata</span><span class="cv">:</span>
+  <span class="ck">name</span><span class="cv">:</span> sqlserver-service
+<span class="ck">spec</span><span class="cv">:</span>
+  <span class="ck">selector</span><span class="cv">:</span>
+    <span class="ck">app</span><span class="cv">:</span> sqlserver
+  <span class="ck">ports</span><span class="cv">:</span>
+    - <span class="ck">port</span><span class="cv">:</span> <span class="cn">1433</span>
+      <span class="ck">targetPort</span><span class="cv">:</span> <span class="cn">1433</span>
+  <span class="ck">type</span><span class="cv">:</span> ClusterIP</pre></div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.3 Pod Architecture ── -->
+        <div id="deploy-pods">
+          <h3>8.3 &nbsp;Pod Architecture</h3>
+          <p style="margin-bottom:18px;">
+            The cluster contains <strong>two Pods</strong>. The ASP.NET Core MVC application is kept
+            as a single Pod because the MVC pattern compiles UI (Razor Views) and backend logic
+            together — they cannot be split into separate deployable units.
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr><th>Pod</th><th>Container Image</th><th>Port</th><th>Reason for Separation</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>App Pod</strong></td>
+                <td><code>cloudmanager:latest</code></td>
+                <td><code>8080</code></td>
+                <td>ASP.NET Core MVC — UI and logic are inseparable in the MVC pattern.</td>
+              </tr>
+              <tr>
+                <td><strong>SQL Server Pod</strong></td>
+                <td><code>mssql/server:2022</code></td>
+                <td><code>1433</code></td>
+                <td>Database runs in its own isolated Pod with a stable Service for connection string.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-info" style="margin-top:20px;">
+            💡 <strong>Why not split the app into two Pods (UI + API)?</strong> Cloud Manager uses
+            ASP.NET Core MVC, where Razor Views are <em>server-rendered inside the same process</em>
+            as the controllers and services. There is no separate frontend bundle — splitting is not
+            applicable to the MVC pattern.
+          </div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.4 Commands ── -->
+        <div id="deploy-commands">
+          <h3>8.4 &nbsp;Build &amp; Deployment Commands</h3>
+          <p style="margin-bottom:18px;">
+            Full pipeline: build the Docker image → push to Docker Hub → apply K8s manifests → get the URL.
+          </p>
+
+          <h4 style="font-size:14px;margin-bottom:8px;color:var(--ink2);">Step 1 — Build &amp; Push the Docker Image</h4>
+          <div class="code-header"><span>Terminal</span><span class="code-lang">Docker Build + Push</span></div>
+          <div class="code-block"><pre><span class="cc"># Build the custom image from the project Dockerfile</span>
+docker build -t &lt;dockerhub-user&gt;/cloudmanager:latest .
+
+<span class="cc"># Push to Docker Hub so Kubernetes can pull it</span>
+docker push &lt;dockerhub-user&gt;/cloudmanager:latest</pre></div>
+
+          <div style="height:20px;"></div>
+
+          <h4 style="font-size:14px;margin-bottom:8px;color:var(--ink2);">Step 2 — Apply YAML Manifests</h4>
+          <div class="code-header"><span>Terminal</span><span class="code-lang">kubectl — Deploy to Cluster</span></div>
+          <div class="code-block"><pre><span class="cc"># Apply all three config files</span>
+kubectl apply -f sql.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+<span class="cc"># Verify Pods are running</span>
+kubectl get pods
+
+<span class="cc"># Verify Services are up</span>
+kubectl get services</pre></div>
+
+          <div style="height:20px;"></div>
+
+          <h4 style="font-size:14px;margin-bottom:8px;color:var(--ink2);">Step 3 — Get the Access URL</h4>
+          <div class="code-header"><span>Terminal</span><span class="code-lang">minikube — Retrieve App URL</span></div>
+          <div class="code-block"><pre><span class="cc"># Get the URL to open the project in the browser</span>
+minikube service cloudmanager-service --url
+
+<span class="cc"># Example output:</span>
+<span class="cs">http://127.0.0.1:54321</span></pre></div>
+
+          <div class="callout callout-warn" style="margin-top:20px;">
+            ⚠ <strong>Limitation:</strong> The URL returned by Kubernetes is only accessible from
+            the same local network. To share the app publicly with anyone on any network, a
+            Cloudflare Tunnel is used in the next step.
+          </div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.5 Cloudflare Tunnel ── -->
+        <div id="deploy-cloudflare">
+          <h3>8.5 &nbsp;Public Access via Cloudflare Tunnel</h3>
+          <p style="margin-bottom:18px;">
+            To expose the application publicly — without a static IP, without opening firewall ports,
+            and accessible from <em>any</em> network — a <strong>Cloudflare Tunnel</strong> is
+            established between the Kubernetes cluster and Cloudflare's edge network.
+          </p>
+
+          <table class="data-table" style="margin-bottom:28px;">
+            <thead>
+              <tr><th>#</th><th>Step</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Tunnel Created</strong></td>
+                <td><code>cloudflared</code> is run in the terminal, creating an outbound-only encrypted tunnel from the local machine to Cloudflare's edge — no inbound ports needed.</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>URL Issued</strong></td>
+                <td>Cloudflare assigns a public HTTPS URL (e.g. <code>https://abc123.trycloudflare.com</code>). Anyone on any network can open this URL.</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Traffic Routed</strong></td>
+                <td>Requests hit Cloudflare's edge → flow through the tunnel → reach the K8s Service → reach the App Pod.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-header"><span>Terminal (CMD)</span><span class="code-lang">Cloudflare Tunnel — expose Kubernetes app publicly</span></div>
+          <div class="code-block"><pre><span class="cc"># Run cloudflared pointing at the local Kubernetes service URL</span>
+cloudflared tunnel --url http://127.0.0.1:54321
+
+<span class="cc"># Cloudflare will output a public URL such as:</span>
+<span class="cs">https://random-name.trycloudflare.com</span>
+<span class="cc">#</span>
+<span class="cc"># Anyone on any network can now access Cloud Manager at this URL.</span></pre></div>
+
+          <div class="callout callout-success" style="margin-top:20px;">
+            ✅ <strong>Key benefit:</strong> No public IP required, no firewall rules, no port
+            forwarding. The tunnel is outbound-only from the local machine — Cloudflare handles all
+            incoming traffic securely at the edge.
+          </div>
+        </div>
+
+        <div class="space"></div>
+
+        <!-- ── 8.6 Summary ── -->
+        <h3>8.6 &nbsp;Deployment Summary</h3>
+        <table class="data-table">
+          <thead>
+            <tr><th>Component</th><th>Details</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Orchestration</strong></td><td>Kubernetes (K8s) — 1 cluster, 1 node, 2 Pods</td></tr>
+            <tr><td><strong>App Pod</strong></td><td><code>cloudmanager:latest</code> — custom-built Docker image, pushed to Docker Hub</td></tr>
+            <tr><td><strong>Database Pod</strong></td><td><code>mssql/server:2022-latest</code> — SQL Server in its own Pod</td></tr>
+            <tr><td><strong>Config Files</strong></td><td><code>deployment.yaml</code> · <code>service.yaml</code> · <code>sql.yaml</code> · <code>Dockerfile</code></td></tr>
+            <tr><td><strong>Internal Networking</strong></td><td>K8s Services (ClusterIP) — stable DNS for app → SQL Server communication</td></tr>
+            <tr><td><strong>Public Access</strong></td><td>Cloudflare Tunnel via <code>cloudflared</code> — public HTTPS URL, zero open ports</td></tr>
+          </tbody>
+        </table>
+
+        <div class="space"></div>
+      </section>
+
+    </main>
+
+    <script>
+      // Active sidebar link on scroll
+      const sections = document.querySelectorAll("section[id], div[id]");
+      const links = document.querySelectorAll(".sb-link");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              links.forEach((l) => l.classList.remove("active"));
+              const a = document.querySelector(
+                `.sb-link[href="#${e.target.id}"]`,
+              );
+              if (a) a.classList.add("active");
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+      sections.forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>
